@@ -40,7 +40,7 @@ export default function Dropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-[0.4rem] bg-[#D2D2D2] hover:bg-[#b4b4b4] rounded-[10px] h-[2.2rem] w-auto px-[0.8rem] text-left"
+        className="flex items-center gap-[0.4rem] bg-[#EDEDED] border-[1px] border-black-200 hover:bg-[#cecece] rounded-[10px] h-[2.2rem] w-auto px-[0.8rem] text-left"
       >
         {dataSelected.text}
         <RiArrowDropDownLine className="text-2xl" />

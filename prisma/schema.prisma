@@ -10,13 +10,14 @@ datasource db {
 }
 
 model category {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   categoryName String
   emoji        String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   typeId       Int
-  type         type     @relation(fields: [typeId], references: [id])
+  type         type          @relation(fields: [typeId], references: [id])
+  transaction  transaction[]
 }
 
 model type {
@@ -26,4 +27,16 @@ model type {
   updatedAt DateTime   @updatedAt
   typeCode  String
   category  category[]
+}
+
+model transaction {
+  id              Int       @id @default(autoincrement())
+  transactionCode String    @unique
+  amount          Float
+  categoryId      Int?
+  createdAt       DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime  @updatedAt @db.Timestamp(6)
+  transDate       DateTime? @db.Timestamp(6)
+  transactionDesc String?
+  category        category? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

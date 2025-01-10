@@ -37,22 +37,22 @@ export default function EmojiInput({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleEmojiSelect = (emoji: any) => {
+  function handleEmojiSelect(emoji: any) {
     const newValue = value + emoji.emoji;
     setValue(newValue);
     setIsEmojiPickerOpen(false);
     if (onChange) onChange(newValue);
-  };
+  }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value;
     setValue(newValue);
     if (onChange) onChange(newValue);
-  };
+  }
 
-  const handleFocus = () => {
+  function handleFocus() {
     setIsEmojiPickerOpen(true);
-  };
+  }
 
   return (
     <div className="relative">
@@ -67,10 +67,9 @@ export default function EmojiInput({
       {isEmojiPickerOpen && (
         <div
           ref={emojiPickerRef}
-          className="absolute top-full mt-2 bg-white shadow-lg border rounded-lg z-10 overflow-y-auto max-h-[300px] w-[16rem] lg:w-[22rem]"
+          className="absolute top-full mt-2 bg-white shadow-lg border rounded-lg z-10 overflow-y-auto h-[300px] md:h-[400px] w-[16rem] lg:w-[22rem]"
         >
           <EmojiPicker onEmojiClick={handleEmojiSelect} searchDisabled={true} />{" "}
-          {/* Disable search */}
         </div>
       )}
     </div>
