@@ -1,8 +1,8 @@
 "use client";
-import ActionButton from "@/app/components/action-button/page";
-import Logo from "@/app/components/logo/page";
-import Navbar from "@/app/components/navbar/page";
-import Table from "@/app/components/table/page";
+import { ActionButton } from "@/app/components/action-button/ActionButton";
+import { Logo } from "@/app/components/logo/Logo";
+import { Navbar } from "@/app/components/navbar/Navbar";
+import { Table } from "@/app/components/table/Table";
 import { useEffect, useState } from "react";
 import {
   addTransaction,
@@ -10,11 +10,11 @@ import {
   getCategoryDropdown,
   getTransaction,
 } from "./service";
-import Modal from "@/app/components/modal/page";
-import Textbox from "@/app/components/textbox/page";
+import { Modal } from "@/app/components/modal/Modal";
+import { Textbox } from "@/app/components/textbox/Textbox";
 import { useForm } from "react-hook-form";
-import Dropdown from "@/app/components/dropdown/page";
-import { DropDown } from "@/app/interfaces/page";
+import { Dropdown } from "@/app/components/dropdown/Dropdown";
+import { DropDown } from "@/app/interfaces/interface";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.min.css";
 import { LiaTimesCircle } from "react-icons/lia";
@@ -84,6 +84,7 @@ export default function Transaction() {
   }
 
   function handleEditTransaction(editTransData: any) {
+    const amountNumber = parseFloat(editTransData.amount.replace(/,/g, ""));
     setId(editTransData.id);
     setSelectedCategory({
       value: editTransData.categoryId,
@@ -92,7 +93,7 @@ export default function Transaction() {
     setSelectedDate(new Date(editTransData.transDate));
     reset({
       transactionDesc: editTransData.transactionDesc,
-      amount: editTransData.amount,
+      amount: amountNumber,
     });
 
     setIsOpenModalEdit(true);
@@ -143,9 +144,9 @@ export default function Transaction() {
     };
     try {
       const responseAddTransaction = await addTransaction(transSaveData);
+      setIsOpenModalEdit(false);
       if ([200, 201].includes(responseAddTransaction.status)) {
         setFetchData(true);
-        setIsOpenModalEdit(false);
         setResponseMessageSuccess("บันทึกข้อมูลสำเร็จ");
         setIsModalNotiOpen(true);
         setSelectedCategory({ value: 0, text: "เลือกหมวดหมู่" });
@@ -157,6 +158,9 @@ export default function Transaction() {
           amount: undefined,
           transactionDesc: "",
         });
+      } else {
+        setResponseMessageFail(responseAddTransaction.response.data.error);
+        setIsModalNotiOpen(true);
       }
     } catch (err) {
       console.error(err);
@@ -272,6 +276,7 @@ export default function Transaction() {
               onChange={(date) => (date ? setSelectedDate(date) : null)}
               onClean={() => setSelectedDate(null)}
               format="dd/MM/yyyy"
+              placeholder="เลือกวันเดือนปี"
               shouldDisableDate={(current) =>
                 current ? current > new Date() : false
               }
