@@ -19,5 +19,9 @@
 body {
   color: var(--foreground);
   background: var(--background);
+<<<<<<< HEAD
   font-family: "IBM Plex Sans Thai", sans-serif;
+=======
+  font-family: "Open Sans", "Inter", "IBM Plex Sans Thai", sans-serif;
+>>>>>>> f1a7c7f (transaction:complete)
 }
