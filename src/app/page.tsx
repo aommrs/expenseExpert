@@ -35,7 +35,7 @@ export default function Home() {
           </p>
           <button
             onClick={handleNavigate}
-            className="hover:bg-[#6D8AFF] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[1rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
+            className="hover:bg-[#2d4dcd] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[1rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
           >
             Get Started
           </button>
