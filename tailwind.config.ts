@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['IBM Plex Sans Thai'],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

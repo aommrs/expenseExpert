@@ -16,7 +16,6 @@ import { DropDown } from "@/app/interfaces/page";
 interface FormData {
   emoji: string;
   categoryName: string;
-  typeCode: number;
 }
 
 export default function Category() {
@@ -48,7 +47,7 @@ export default function Category() {
     TAX = "05",
   }
 
-  const getColorByTypeCode = (typeCode: Type): string => {
+  function getColorByTypeCode(typeCode: Type): string {
     switch (typeCode) {
       case Type.INCOME:
         return "bg-green-500";
@@ -63,13 +62,13 @@ export default function Category() {
       default:
         return "bg-gray-500";
     }
-  };
+  }
 
-  const handleAddCategory = () => {
+  function handleAddCategory() {
     setIsModalSaveDataOpen(true);
-  };
+  }
 
-  const handleEditCategory = (editCategoryData: any) => {
+  async function handleEditCategory(editCategoryData: any) {
     setEditId(editCategoryData.id);
     setSelectedType({
       value: editCategoryData.typeId,
@@ -82,9 +81,9 @@ export default function Category() {
     });
 
     setIsModalSaveDataOpen(true);
-  };
+  }
 
-  const handleDeleteCategory = async (deleteCategoryId: number) => {
+  async function handleDeleteCategory(deleteCategoryId: number) {
     try {
       const responseDeleteCategory = await deleteCategory(deleteCategoryId);
       console.log("Response Data==>", responseDeleteCategory);
@@ -95,14 +94,14 @@ export default function Category() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
-  const handleTypeSelect = (type: DropDown) => {
+  function handleTypeSelect(type: DropDown) {
     setSelectedType(type);
     console.log("Selected type: ", type.value);
-  };
+  }
 
-  const onSubmit = async (data: FormData) => {
+  async function onSubmit(data: FormData) {
     const categorySaveData = {
       id: editId,
       typeId: selectedType.value,
@@ -114,7 +113,10 @@ export default function Category() {
       console.log("Response Data==>", responseAddCategory);
       setIsModalSaveDataOpen(false);
       setSelectedType({ value: 0, text: "เลือกประเภท" });
-      reset();
+      reset({
+        emoji: "",
+        categoryName: "",
+      });
 
       if ([200, 201].includes(responseAddCategory.status)) {
         setFetchData(true);
@@ -122,7 +124,7 @@ export default function Category() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
   useEffect(() => {
     const fetchDataAsync = async () => {
@@ -151,20 +153,20 @@ export default function Category() {
     <>
       <div className="flex flex-col justify-between min-h-screen">
         <div className="flex flex-col">
-          <div className="mt-[4rem] ms-[2rem] md:ms-[4rem] z-10">
+          <div className="mt-[4rem] ms-[2rem] md:ms-[4rem]">
             <Logo />
           </div>
           <div className="mt-[5rem] ps-[2rem] md:ps-[4rem]">
             <button
               onClick={handleAddCategory}
-              className="w-auto h-auto rounded-[15px] text-sm md:text-base bg-[#ddf3ff] hover:bg-[#aae0fd] p-[0.8rem]"
+              className="flex items-center w-auto h-[2.5rem] rounded-[15px] text-sm md:text-base font-medium bg-[#F2F2F2] hover:bg-[#d2d2d2] p-[0.8rem]"
             >
               เพิ่มหมวดหมู่
             </button>
           </div>
           <div className="flex flex-wrap justify-center lg:justify-start gap-4 px-[4rem] mt-[2rem]">
             {category.map((item, index) => {
-              const color = getColorByTypeCode(item.typeCode as Type);
+              const color = getColorByTypeCode(item.typeCode);
               return (
                 <CategoryCard key={index}>
                   <div className="flex flex-col gap-[0.2rem]">
@@ -210,13 +212,13 @@ export default function Category() {
             })}
           </div>
         </div>
-        <div className="fixed bottom-[2rem] left-[50%] transform -translate-x-1/2 z-50">
+        <div className="fixed bottom-[2rem] left-[50%] transform -translate-x-1/2">
           <Navbar />
         </div>
       </div>
 
       <Modal isOpen={isModalSaveDataOpen}>
-        <h2 className="text-lg font-bold">เพิ่มหมวดหมู่</h2>
+        <h2 className="text-lg font-bold">กรอกข้อมูลหมวดหมู่</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col mt-[2rem] items-center lg:flex-row md:justify-center lg:items-end lg:gap-[2rem] lg:mt-0">
             <Dropdown
@@ -250,7 +252,7 @@ export default function Category() {
               {errors.categoryName.message}
             </p>
           )}
-          <div className="flex justify-center mt-[2rem] lg:mt-[1rem] gap-[0.5rem] ">
+          <div className="flex justify-center mt-[2rem] lg:mt-[2rem] gap-[0.5rem] ">
             <button
               type="submit"
               className="rounded-[10px] bg-[#A4C2A6] hover:bg-[#91ac93] px-[0.8rem] py-[0.2rem] w-auto"
@@ -261,7 +263,14 @@ export default function Category() {
               type="button"
               onClick={() => {
                 setIsModalSaveDataOpen(false);
-                reset();
+                setSelectedType({
+                  value: 0,
+                  text: "เลือกประเภท",
+                });
+                reset({
+                  emoji: "",
+                  categoryName: "",
+                });
               }}
               className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
             >
@@ -272,25 +281,27 @@ export default function Category() {
       </Modal>
 
       <Modal isOpen={isModalDeleteDataOpen}>
-        <h2 className="text-lg font-bold">ยืนยันการลบหรือไม่</h2>
-        <div className="flex justify-center gap-[1rem] mt-[1rem]">
-          <button
-            onClick={() => {
-              deleteId !== null && handleDeleteCategory(deleteId);
-            }}
-            className="rounded-[10px] bg-[#ff9d9d] hover:bg-[#ff7e7e] px-[0.8rem] py-[0.2rem] w-auto"
-          >
-            ลบ
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setIsModalDeleteDataOpen(false);
-            }}
-            className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
-          >
-            ยกเลิก
-          </button>
+        <div className="md:px-[3rem]">
+          <h2 className="text-lg font-bold">ยืนยันการลบหรือไม่</h2>
+          <div className="flex justify-center gap-[1rem] mt-[1rem]">
+            <button
+              onClick={() => {
+                deleteId !== null && handleDeleteCategory(deleteId);
+              }}
+              className="rounded-[10px] bg-[#ff9d9d] hover:bg-[#ff7e7e] px-[0.8rem] py-[0.2rem] w-auto"
+            >
+              ลบ
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsModalDeleteDataOpen(false);
+              }}
+              className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
+            >
+              ยกเลิก
+            </button>
+          </div>
         </div>
       </Modal>
     </>
