@@ -19,7 +19,11 @@ from transaction tst
 join category c on tst."categoryId" = c.id
 join type t on c."typeId" = t.id
 <<<<<<< HEAD
+<<<<<<< HEAD
 order by tst."transDate" desc
 =======
 order by tst."transactionCode" asc
 >>>>>>> f1a7c7f (transaction:complete)
+=======
+order by tst."transDate" desc
+>>>>>>> 74f2dfc (complete all)
