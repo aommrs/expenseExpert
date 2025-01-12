@@ -17,15 +17,17 @@ import Dropdown from "@/app/components/dropdown/page";
 import { DropDown } from "@/app/interfaces/page";
 import DatePicker from "rsuite/DatePicker";
 import "rsuite/dist/rsuite.min.css";
+import { LiaTimesCircle } from "react-icons/lia";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 export default function Transaction() {
+  const [isModalNotiOpen, setIsModalNotiOpen] = useState(false);
   const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
   const [transaction, setTransaction] = useState<any[]>([]);
   const [category, setCategory] = useState<any[]>([]);
   const [id, setId] = useState(null);
-  const [generateCode, setGenerateCode] = useState("00");
-  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedDate, setSelectedDate] = useState<Date | null>();
   const [selectedCategory, setSelectedCategory] = useState<DropDown>({
     value: 0,
     text: "เลือกหมวดหมู่",
@@ -33,6 +35,8 @@ export default function Transaction() {
   const [errorSelectedCategory, setErrorSelectedCategory] = useState("");
   const [errorSelectedDate, setErrorSelectedDate] = useState("");
   const [fetchData, setFetchData] = useState(false);
+  const [responseMessageSuccess, setResponseMessageSuccess] = useState("");
+  const [responseMessageFail, setResponseMessageFail] = useState("");
 
   const {
     register,
@@ -101,13 +105,16 @@ export default function Transaction() {
       setIsOpenModalDelete(false);
       if ([200, 201].includes(responseDeleteTransaction.status)) {
         setFetchData(true);
+        setResponseMessageSuccess("ลบข้อมูลสำเร็จ");
+        setIsModalNotiOpen(true);
+        setId(null);
       }
     } catch (err) {
       console.error(err);
     }
   }
 
-  async function onSubmit(data: FormData) {
+  function generateCode(): string {
     const maxCode =
       transaction.length > 0
         ? transaction.reduce((max, trans) => {
@@ -119,13 +126,18 @@ export default function Transaction() {
           }, 0)
         : 0;
 
-    const newCode = maxCode + 1;
-    setGenerateCode(newCode.toString().padStart(2, "0"));
+    const newCode = (maxCode + 1).toString().padStart(2, "0");
+
+    return newCode;
+  }
+
+  async function onSubmit(data: FormData) {
+    const transacCode = generateCode();
     const transSaveData = {
       id: id,
       categoryId: selectedCategory.value,
       amount: Number(data.amount),
-      transactionCode: `transac${generateCode}`,
+      transactionCode: `transac${transacCode}`,
       transactionDesc: data.transactionDesc,
       transDate: selectedDate ? new Date(selectedDate) : null,
     };
@@ -134,7 +146,10 @@ export default function Transaction() {
       if ([200, 201].includes(responseAddTransaction.status)) {
         setFetchData(true);
         setIsOpenModalEdit(false);
+        setResponseMessageSuccess("บันทึกข้อมูลสำเร็จ");
+        setIsModalNotiOpen(true);
         setSelectedCategory({ value: 0, text: "เลือกหมวดหมู่" });
+        setSelectedDate(null);
         setErrorSelectedCategory("");
         setErrorSelectedDate("");
         setId(null);
@@ -172,7 +187,7 @@ export default function Transaction() {
 
   return (
     <>
-      <div className="mt-[4rem] ms-[2rem] md:ms-[4rem]">
+      <div className="mt-[4rem]">
         <Logo />
       </div>
       <div className="mt-[5rem] mb-[2rem] ps-[2rem] md:ps-[4rem]">
@@ -255,7 +270,11 @@ export default function Transaction() {
               className="z-50 lg:mt-0 mt-[2rem]"
               value={selectedDate}
               onChange={(date) => (date ? setSelectedDate(date) : null)}
+              onClean={() => setSelectedDate(null)}
               format="dd/MM/yyyy"
+              shouldDisableDate={(current) =>
+                current ? current > new Date() : false
+              }
             />
             <Dropdown
               data={category}
@@ -301,6 +320,8 @@ export default function Transaction() {
                   amount: undefined,
                 });
                 setSelectedCategory({ value: 0, text: "เลือกหมวดหมู่" });
+                setSelectedDate(null);
+                setId(null);
                 setIsOpenModalEdit(false);
                 setErrorSelectedCategory("");
                 setErrorSelectedDate("");
@@ -334,6 +355,40 @@ export default function Transaction() {
               className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
             >
               ยกเลิก
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isModalNotiOpen}>
+        <div className="md:px-[3rem]">
+          {responseMessageFail != "" && (
+            <div className="flex flex-col items-center">
+              <LiaTimesCircle className="text-4xl text-red-500 text-center" />
+              <h2 className="text-lg text-center font-bold mt-[1rem]">
+                {responseMessageFail}
+              </h2>
+            </div>
+          )}
+          {responseMessageSuccess != "" && (
+            <div className="flex flex-col items-center">
+              <IoIosCheckmarkCircleOutline className="text-4xl text-green-500 text-center" />
+              <h2 className="text-lg text-center font-bold">
+                {responseMessageSuccess}
+              </h2>
+            </div>
+          )}
+          <div className="flex justify-center mt-[1rem]">
+            <button
+              type="button"
+              onClick={() => {
+                setIsModalNotiOpen(false);
+                setResponseMessageFail("");
+                setResponseMessageSuccess("");
+              }}
+              className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
+            >
+              ตกลง
             </button>
           </div>
         </div>

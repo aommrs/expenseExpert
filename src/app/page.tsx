@@ -20,11 +20,11 @@ export default function Home() {
   return (
     <>
       <ClerkProvider>
-        <div className="relative h-screen flex flex-col justify-center items-center">
-          <div className="absolute top-[4rem] left-[2rem] md:left-[4rem] z-10">
-            <Logo />
-          </div>
-          <h1 className="text-center text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
+        <div className="mt-[4rem]">
+          <Logo />
+        </div>
+        <div className="relative h-screen flex flex-col justify-center items-center mt-[-6.6rem]">
+          <h1 className="text-center font-medium text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
             Simplify <span className="text-red-600">spending</span>, amplify
             <span className="text-amber-400"> savings</span>
           </h1>
