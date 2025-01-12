@@ -37,8 +37,8 @@ export const deleteCategory = async (id: number): Promise<any> => {
             data: { id },
         });
         return response
-    } catch (error) {
-        console.error('Error delete category:', error);
-        throw error;
+    }
+    catch (error) {
+        return error;
     }
 };
