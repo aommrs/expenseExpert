@@ -167,10 +167,10 @@ export default function Category() {
     <>
       <div className="flex flex-col justify-between min-h-screen">
         <div className="flex flex-col">
-          <div className="mt-[4rem] ms-[2rem] md:ms-[4rem]">
+          <div className="mt-[4rem]">
             <Logo />
           </div>
-          <div className="mt-[5rem]">
+          <div className="mt-[5rem] mb-[2rem] ps-[2rem] md:ps-[4rem]">
             <button
               onClick={handleAddCategory}
               className="flex items-center w-auto h-[2.5rem] rounded-[15px] text-sm md:text-base font-medium bg-[#F2F2F2] hover:bg-[#d2d2d2] p-[0.8rem]"
