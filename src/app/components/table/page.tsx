@@ -35,7 +35,7 @@ export default function Table({ columns, data, children }: TableProps) {
   }, {} as { [date: string]: { [key: string]: any }[] });
 
   return (
-    <div className="flex justify-center px-[2rem]">
+    <div className="flex justify-center px-[2rem] mb-[8rem]">
       <table className="w-[50rem] text-sm text-gray-700 bg-white">
         <tbody>
           {data.length === 0 ? (
@@ -59,7 +59,6 @@ export default function Table({ columns, data, children }: TableProps) {
                   <tr key={rowIndex} className="hover:bg-gray-50">
                     {columns.map((col, colIndex) => {
                       const isAmount = col.field === "amount";
-                      const isTransDesc = col.field === "transactionDesc";
                       const colorText = getColorTextByType(row.typeCode);
                       const sign = getSignByType(row.typeCode);
                       return (

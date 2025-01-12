@@ -12,6 +12,8 @@ import Textbox from "@/app/components/textbox/page";
 import Dropdown from "@/app/components/dropdown/page";
 import EmojiInput from "@/app/components/emoji-input/page";
 import { DropDown } from "@/app/interfaces/page";
+import { LiaTimesCircle } from "react-icons/lia";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 interface FormData {
   emoji: string;
@@ -25,11 +27,14 @@ export default function Category() {
     value: 0,
     text: "เลือกประเภท",
   });
+  const [isModalNotiOpen, setIsModalNotiOpen] = useState(false);
   const [isModalSaveDataOpen, setIsModalSaveDataOpen] = useState(false);
   const [isModalDeleteDataOpen, setIsModalDeleteDataOpen] = useState(false);
   const [fetchData, setFetchData] = useState(false);
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [responseMessageSuccess, setResponseMessageSuccess] = useState("");
+  const [responseMessageFail, setResponseMessageFail] = useState("");
 
   const {
     register,
@@ -86,10 +91,18 @@ export default function Category() {
   async function handleDeleteCategory(deleteCategoryId: number) {
     try {
       const responseDeleteCategory = await deleteCategory(deleteCategoryId);
-      console.log("Response Data==>", responseDeleteCategory);
       setIsModalDeleteDataOpen(false);
       if ([200, 201].includes(responseDeleteCategory.status)) {
+        setResponseMessageSuccess("ลบข้อมูลสำเร็จ");
+        setIsModalNotiOpen(true);
         setFetchData(true);
+      } else {
+        console.log(
+          "Response Data==>",
+          responseDeleteCategory.response.data.error
+        );
+        setResponseMessageFail(responseDeleteCategory.response.data.error);
+        setIsModalNotiOpen(true);
       }
     } catch (err) {
       console.error(err);
@@ -110,7 +123,6 @@ export default function Category() {
     console.log("Form data==>", categorySaveData);
     try {
       const responseAddCategory = await addCategory(categorySaveData);
-      console.log("Response Data==>", responseAddCategory);
       setIsModalSaveDataOpen(false);
       setSelectedType({ value: 0, text: "เลือกประเภท" });
       reset({
@@ -120,6 +132,8 @@ export default function Category() {
 
       if ([200, 201].includes(responseAddCategory.status)) {
         setFetchData(true);
+        setResponseMessageSuccess("บันทึกข้อมูลสำเร็จ");
+        setIsModalNotiOpen(true);
       }
     } catch (err) {
       console.error(err);
@@ -156,7 +170,7 @@ export default function Category() {
           <div className="mt-[4rem] ms-[2rem] md:ms-[4rem]">
             <Logo />
           </div>
-          <div className="mt-[5rem] ps-[2rem] md:ps-[4rem]">
+          <div className="mt-[5rem]">
             <button
               onClick={handleAddCategory}
               className="flex items-center w-auto h-[2.5rem] rounded-[15px] text-sm md:text-base font-medium bg-[#F2F2F2] hover:bg-[#d2d2d2] p-[0.8rem]"
@@ -300,6 +314,40 @@ export default function Category() {
               className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
             >
               ยกเลิก
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isModalNotiOpen}>
+        <div className="md:px-[3rem]">
+          {responseMessageFail != "" && (
+            <div className="flex flex-col items-center">
+              <LiaTimesCircle className="text-4xl text-red-500 text-center" />
+              <h2 className="text-lg text-center font-bold mt-[1rem]">
+                {responseMessageFail}
+              </h2>
+            </div>
+          )}
+          {responseMessageSuccess != "" && (
+            <div className="flex flex-col items-center">
+              <IoIosCheckmarkCircleOutline className="text-4xl text-green-500 text-center" />
+              <h2 className="text-lg text-center font-bold">
+                {responseMessageSuccess}
+              </h2>
+            </div>
+          )}
+          <div className="flex justify-center mt-[1rem]">
+            <button
+              type="button"
+              onClick={() => {
+                setIsModalNotiOpen(false);
+                setResponseMessageFail("");
+                setResponseMessageSuccess("");
+              }}
+              className="rounded-[10px] bg-[#DCDCDC] hover:bg-[#afafaf] px-[0.8rem] py-[0.2rem] w-auto"
+            >
+              ตกลง
             </button>
           </div>
         </div>
