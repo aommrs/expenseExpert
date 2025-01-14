@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Expert Expense",
   description: "Simplifying Finance, Elevating Experiences",
+  icons: {
+    icon: "/images/expense-logo.svg",
+    shortcut: "/images/expense-logo-32x32.png",
+    apple: "/images/expense-logo-180x180.png",
+  },
 };
 
 export default function RootLayout({
