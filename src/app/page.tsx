@@ -20,11 +20,11 @@ export default function Home() {
   return (
     <>
       <ClerkProvider>
-        <div className="relative h-screen flex flex-col justify-center items-center">
-          <div className="absolute top-[4rem] left-[2rem] md:left-[4rem] z-10">
-            <Logo />
-          </div>
-          <h1 className="text-center text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
+        <div className="mt-[4rem]">
+          <Logo />
+        </div>
+        <div className="relative h-screen flex flex-col justify-center items-center mt-[-6.6rem]">
+          <h1 className="text-center font-medium text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
             Simplify <span className="text-red-600">spending</span>, amplify
             <span className="text-amber-400"> savings</span>
           </h1>
@@ -35,7 +35,7 @@ export default function Home() {
           </p>
           <button
             onClick={handleNavigate}
-            className="hover:bg-[#6D8AFF] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[1rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
+            className="hover:bg-[#2d4dcd] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[1rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
           >
             Get Started
           </button>

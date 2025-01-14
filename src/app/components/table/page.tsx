@@ -6,6 +6,24 @@ interface TableProps {
   children?: (row: { [key: string]: any }) => React.ReactNode;
 }
 
+enum Type {
+  INCOME = "01",
+  EXPENSE = "02",
+  SAVING = "03",
+  INVESTMENT = "04",
+  TAX = "05",
+}
+
+function getColorTextByType(typeCode: string) {
+  return typeCode === Type.INCOME || typeCode === Type.SAVING
+    ? "text-[#17DB21]"
+    : "text-[#FF0000]";
+}
+
+function getSignByType(typeCode: string) {
+  return typeCode === Type.INCOME || typeCode === Type.SAVING ? "+" : "-";
+}
+
 export default function Table({ columns, data, children }: TableProps) {
   const groupedData = data.reduce((acc, row) => {
     const date = row.date;
@@ -17,83 +35,54 @@ export default function Table({ columns, data, children }: TableProps) {
   }, {} as { [date: string]: { [key: string]: any }[] });
 
   return (
-    <div className="flex justify-center px-[2rem]">
-      <div className="overflow-x-auto">
-        <table
-          className="w-[50rem] text-sm text-gray-700 bg-white shadow-lg rounded-lg overflow-hidden"
-          style={{ tableLayout: "auto" }}
-        >
-          <thead className="text-xs text-gray-500 bg-gray-100">
+    <div className="flex justify-center px-[2rem] mb-[8rem]">
+      <table className="w-[50rem] text-sm text-gray-700 bg-white">
+        <tbody>
+          {data.length === 0 ? (
             <tr>
-              {columns.map((col, index) => (
-                <th
-                  key={index}
-                  scope="col"
-                  className="px-3 py-2 text-center"
-                  style={{ textAlign: "center", whiteSpace: "nowrap" }}
-                >
-                  {col.label}
-                </th>
-              ))}
-              <th
-                scope="col"
-                colSpan={2}
-                className="px-3 py-2 text-center"
-                style={{ textAlign: "center", whiteSpace: "nowrap" }}
-              >
-                Action
-              </th>
+              <td colSpan={columns.length + 2} className="text-center py-4">
+                No records found.
+              </td>
             </tr>
-          </thead>
-
-          <tbody>
-            {data.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={columns.length + 2}
-                  className="text-center py-4"
-                  style={{ textAlign: "center" }}
-                >
-                  No matching records found.
-                </td>
-              </tr>
-            ) : (
-              Object.entries(groupedData).map(([date, rows], groupIndex) => (
-                <React.Fragment key={groupIndex}>
-                  <tr>
-                    <td
-                      colSpan={columns.length + 2}
-                      className="px-3 py-2 text-center font-bold bg-gray-200"
-                    >
-                      {date}
-                    </td>
-                  </tr>
-                  {rows.map((row: any, rowIndex: number) => (
-                    <tr key={rowIndex} className="hover:bg-gray-50">
-                      {columns.map((col, colIndex) => (
+          ) : (
+            Object.entries(groupedData).map(([date, rows], groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                <tr>
+                  <td
+                    colSpan={columns.length + 2}
+                    className="px-3 py-2 text-start text-sm text-[#8D8D8D] font-medium border-b-[2px] border-[#BFBFBF]"
+                  >
+                    {date}
+                  </td>
+                </tr>
+                {rows.map((row: any, rowIndex: number) => (
+                  <tr key={rowIndex} className="hover:bg-gray-50">
+                    {columns.map((col, colIndex) => {
+                      const isAmount = col.field === "amount";
+                      const colorText = getColorTextByType(row.typeCode);
+                      const sign = getSignByType(row.typeCode);
+                      return (
                         <td
                           key={colIndex}
-                          className="px-3 py-2 text-center"
-                          style={{
-                            textAlign: "center",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
+                          className={`px-3 py-2 text-center text-sm ${
+                            isAmount ? colorText : "text-black"
+                          } `}
                         >
+                          {isAmount && sign}
                           {row[col.field]}
                         </td>
-                      ))}
-                      <td className="py-2 text-center" colSpan={2}>
-                        {children && children(row)}{" "}
-                      </td>
-                    </tr>
-                  ))}
-                </React.Fragment>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+                      );
+                    })}
+                    <td className="py-2 text-center text-base">
+                      {children && children(row)}
+                    </td>
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
