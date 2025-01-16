@@ -209,16 +209,16 @@ export default function Dashboard() {
           />
         </div>
       </div>
-      <div className="flex justify-center mt-[2rem] lg:px-0 px-[2rem] mb-[8rem]">
+      <div className="flex justify-center mt-[4rem] lg:px-0 px-[2rem] mb-[8rem]">
         <LineChart
           width={chartWidth / 2}
           height={300}
           series={[
-            { data: incomeLine, label: "income", color: "#4caf50" },
-            { data: expenseLine, label: "expense", color: "#f44336" },
-            { data: investLine, label: "investment", color: "#2196f3" },
-            { data: taxLine, label: "tax", color: "#9c27b0" },
-            { data: savingLine, label: "saving", color: "#ff9800" },
+            { data: incomeLine, label: "รายรับ", color: "#4caf50" },
+            { data: expenseLine, label: "รายจ่าย", color: "#f44336" },
+            { data: investLine, label: "ลงทุน", color: "#2196f3" },
+            { data: taxLine, label: "ภาษี", color: "#9c27b0" },
+            { data: savingLine, label: "เงินเก็บ", color: "#ff9800" },
           ]}
           xAxis={[{ scaleType: "point", data: monthLine }]}
         />
