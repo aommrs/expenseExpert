@@ -143,9 +143,9 @@ export default function Transaction() {
     };
     try {
       const responseAddTransaction = await addTransaction(transSaveData);
+      setIsOpenModalEdit(false);
       if ([200, 201].includes(responseAddTransaction.status)) {
         setFetchData(true);
-        setIsOpenModalEdit(false);
         setResponseMessageSuccess("บันทึกข้อมูลสำเร็จ");
         setIsModalNotiOpen(true);
         setSelectedCategory({ value: 0, text: "เลือกหมวดหมู่" });
@@ -157,6 +157,9 @@ export default function Transaction() {
           amount: undefined,
           transactionDesc: "",
         });
+      } else {
+        setResponseMessageFail(responseAddTransaction.response.data.error);
+        setIsModalNotiOpen(true);
       }
     } catch (err) {
       console.error(err);
@@ -272,6 +275,7 @@ export default function Transaction() {
               onChange={(date) => (date ? setSelectedDate(date) : null)}
               onClean={() => setSelectedDate(null)}
               format="dd/MM/yyyy"
+              placeholder="เลือกวันเดือนปี"
               shouldDisableDate={(current) =>
                 current ? current > new Date() : false
               }

@@ -134,6 +134,9 @@ export default function Category() {
         setFetchData(true);
         setResponseMessageSuccess("บันทึกข้อมูลสำเร็จ");
         setIsModalNotiOpen(true);
+      } else {
+        setResponseMessageFail(responseAddCategory.response.data.error);
+        setIsModalNotiOpen(true);
       }
     } catch (err) {
       console.error(err);

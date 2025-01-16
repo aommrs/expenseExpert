@@ -27,7 +27,7 @@ export const addTransaction = async (transationData: any): Promise<any> => {
         return response;
     } catch (error) {
         console.error('Error adding transation:', error);
-        throw error;
+        return error;
     }
 };
 
