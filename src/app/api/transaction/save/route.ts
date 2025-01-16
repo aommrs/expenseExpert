@@ -7,6 +7,10 @@ export async function POST(request: Request) {
     try {
         const { id, categoryId, amount, transactionCode, transactionDesc, transDate } = await request.json();
 
+        if (!id && (!categoryId || !amount || !transactionDesc)) {
+            return NextResponse.json({ error: 'กรุณากรอกข้อมูลให้ครบ' }, { status: 400 });
+        }
+
         let response;
 
         if (id) {
@@ -17,20 +21,25 @@ export async function POST(request: Request) {
                     amount,
                     transactionCode,
                     transactionDesc,
-                    transDate
+                    transDate,
                 },
             });
         } else {
-            if (!categoryId || !amount || !transactionDesc) {
-                return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+            const count = await prisma.transaction.count();
+            if (count >= 20) {
+                return NextResponse.json(
+                    { error: 'ระบบนี้เป็น Demo ไม่สามารถเพิ่มข้อมูลเกินจำนวน 20 รายการได้' },
+                    { status: 400 }
+                );
             }
+
             response = await prisma.transaction.create({
                 data: {
                     categoryId,
                     amount,
                     transactionCode,
                     transactionDesc,
-                    transDate
+                    transDate,
                 },
             });
         }
@@ -38,6 +47,6 @@ export async function POST(request: Request) {
         return NextResponse.json(response, { status: id ? 200 : 201 });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: 'Failed to process transaction' }, { status: 500 });
+        return NextResponse.json({ error: 'ไม่สามารถเพิ่มรายการได้' }, { status: 500 });
     }
 }
