@@ -47,7 +47,7 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <ul className="absolute bg-white border-gray-300 rounded-lg w-full mt-1 shadow-lg z-10 overflow-hidden">
+        <ul className="absolute bg-white border-gray-300 rounded-lg w-full mt-1 shadow-lg z-50 overflow-hidden">
           {data.map((item, index) => (
             <li
               key={index}

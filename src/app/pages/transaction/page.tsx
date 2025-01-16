@@ -275,6 +275,7 @@ export default function Transaction() {
               onChange={(date) => (date ? setSelectedDate(date) : null)}
               onClean={() => setSelectedDate(null)}
               format="dd/MM/yyyy"
+              placeholder="เลือกวันเดือนปี"
               shouldDisableDate={(current) =>
                 current ? current > new Date() : false
               }
