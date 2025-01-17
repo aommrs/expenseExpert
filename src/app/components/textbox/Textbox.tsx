@@ -9,7 +9,7 @@ interface TextboxProps {
   step?: number;
 }
 
-export default function Textbox({
+export function Textbox({
   placeholder,
   name,
   register,

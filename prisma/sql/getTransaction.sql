@@ -4,10 +4,10 @@ select tst.id
 , to_char(tst.amount, 'FM999,999,999.00') as amount
 , tst."transDate"
 , case
+        when to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy') = to_char(now() + interval '1 day', 'dd/mm/yyyy') 
+        then 'วันนี้'
         when to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy') = to_char(now(), 'dd/mm/yyyy') 
-        then 'today'
-        when to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy') = to_char(now() - interval '1 day', 'dd/mm/yyyy') 
-        then 'yesterday'
+        then 'เมื่อวาน'
         else to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy')
     end as "date"
 , c.id as "categoryId"

@@ -1,17 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import ActionButton from "../../components/action-button/page";
-import CategoryCard from "../../components/category-card/page";
-import CategoryColor from "../../components/category-color/page";
-import Logo from "../../components/logo/page";
+import { ActionButton } from "../../components/action-button/ActionButton";
+import { CategoryCard } from "../../components/category-card/CategoryCard";
+import { CategoryColor } from "../../components/category-color/CategoryColor";
+import { Logo } from "../../components/logo/Logo";
 import { addCategory, deleteCategory, getCategory, getType } from "./service";
-import Navbar from "@/app/components/navbar/page";
-import Modal from "@/app/components/modal/page";
-import Textbox from "@/app/components/textbox/page";
-import Dropdown from "@/app/components/dropdown/page";
-import EmojiInput from "@/app/components/emoji-input/page";
-import { DropDown } from "@/app/interfaces/page";
+import { Navbar } from "@/app/components/navbar/Navbar";
+import { Modal } from "@/app/components/modal/Modal";
+import { Textbox } from "@/app/components/textbox/Textbox";
+import { Dropdown } from "@/app/components/dropdown/Dropdown";
+import { EmojiInput } from "@/app/components/emoji-input/EmojiInput";
+import { DropDown } from "@/app/interfaces/interface";
 import { LiaTimesCircle } from "react-icons/lia";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
@@ -201,7 +201,7 @@ export default function Category() {
                                 toggleVisibility();
                               }}
                             >
-                              Edit
+                              แก้ไข
                             </button>
                             <button
                               className="w-full flex justify-start bg-[#F2F2F2] hover:bg-[#d9d9d9] text-sm px-[1.5rem] py-[0.5rem]"
@@ -211,7 +211,7 @@ export default function Category() {
                                 toggleVisibility();
                               }}
                             >
-                              Delete
+                              ลบ
                             </button>
                           </>
                         )}
