@@ -1,15 +1,15 @@
 "use client";
 import { ReactNode, useState, useCallback, useRef, useEffect } from "react";
 
-interface CategoryCardProps {
+interface ActionButtonProps {
   children: (toggleVisibility: () => void, isVisible: boolean) => ReactNode;
   bgPosition?: string;
 }
 
-export default function ActionButton({
+export function ActionButton({
   children,
   bgPosition = "left-0",
-}: CategoryCardProps) {
+}: ActionButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
   const actionRef = useRef<HTMLDivElement>(null);
 
