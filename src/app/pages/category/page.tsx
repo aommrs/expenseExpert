@@ -181,7 +181,7 @@ export default function Category() {
               เพิ่มหมวดหมู่
             </button>
           </div>
-          <div className="flex flex-wrap justify-center lg:justify-start gap-4 px-[4rem] mt-[2rem]">
+          <div className="flex flex-wrap justify-center lg:justify-start gap-4 px-[4rem] mt-[2rem] mb-[10rem]">
             {category.map((item, index) => {
               const color = getColorByTypeCode(item.typeCode);
               return (
