@@ -4,11 +4,11 @@ select tst.id
 , to_char(tst.amount, 'FM999,999,999.00') as amount
 , tst."transDate"
 , case
-        when to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy') = to_char(now() + interval '1 day', 'dd/mm/yyyy') 
+        when to_char(tst."transDate" + interval '7 hours', 'dd/mm/yyyy') = to_char(now() + interval '7 hours', 'dd/mm/yyyy') 
         then 'วันนี้'
-        when to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy') = to_char(now(), 'dd/mm/yyyy') 
+        when to_char(tst."transDate" + interval '7 hours', 'dd/mm/yyyy') = to_char(now() + interval '7 hours' - interval '1 day', 'dd/mm/yyyy') 
         then 'เมื่อวาน'
-        else to_char(tst."transDate" + interval '1 day', 'dd/mm/yyyy')
+        else to_char(tst."transDate" + interval '7 hours', 'dd/mm/yyyy')
     end as "date"
 , c.id as "categoryId"
 , c.emoji
