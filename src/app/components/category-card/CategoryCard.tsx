@@ -4,7 +4,7 @@ interface CategoryCardProps {
   children: ReactNode;
 }
 
-export default function CategoryCard({ children }: CategoryCardProps) {
+export function CategoryCard({ children }: CategoryCardProps) {
   return (
     <div className="flex justify-center gap-2 bg-[#EBEBEB] rounded-[20px] w-[10rem] md:w-[10rem] lg:w-[12rem] h-auto p-[1rem]">
       {children}

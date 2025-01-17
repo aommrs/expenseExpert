@@ -18,4 +18,4 @@ select tst.id
 from transaction tst
 join category c on tst."categoryId" = c.id
 join type t on c."typeId" = t.id
-order by tst."transactionCode" asc
+order by tst."transDate" desc

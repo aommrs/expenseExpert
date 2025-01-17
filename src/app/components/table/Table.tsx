@@ -2,8 +2,8 @@ import React from "react";
 
 interface TableProps {
   columns: { label: string; field: string }[];
-  data: { [key: string]: any }[];
-  children?: (row: { [key: string]: any }) => React.ReactNode;
+  data: Array<Record<string, string | number | Date>>;
+  children?: (row: Record<string, string | number | Date>) => React.ReactNode;
 }
 
 enum Type {
@@ -24,15 +24,22 @@ function getSignByType(typeCode: string) {
   return typeCode === Type.INCOME || typeCode === Type.SAVING ? "+" : "-";
 }
 
-export default function Table({ columns, data, children }: TableProps) {
+function formatDate(date: Date | string | number): string {
+  if (date instanceof Date) {
+    return date.toLocaleDateString();
+  }
+  return date.toString();
+}
+
+export function Table({ columns, data, children }: TableProps) {
   const groupedData = data.reduce((acc, row) => {
-    const date = row.date;
+    const date = row.date as string;
     if (!acc[date]) {
       acc[date] = [];
     }
     acc[date].push(row);
     return acc;
-  }, {} as { [date: string]: { [key: string]: any }[] });
+  }, {} as Record<string, Array<Record<string, string | number | Date>>>);
 
   return (
     <div className="flex justify-center px-[2rem] mb-[8rem]">
@@ -41,7 +48,7 @@ export default function Table({ columns, data, children }: TableProps) {
           {data.length === 0 ? (
             <tr>
               <td colSpan={columns.length + 2} className="text-center py-4">
-                No records found.
+                ไม่พบข้อมูล
               </td>
             </tr>
           ) : (
@@ -55,12 +62,14 @@ export default function Table({ columns, data, children }: TableProps) {
                     {date}
                   </td>
                 </tr>
-                {rows.map((row: any, rowIndex: number) => (
+                {rows.map((row, rowIndex) => (
                   <tr key={rowIndex} className="hover:bg-gray-50">
                     {columns.map((col, colIndex) => {
                       const isAmount = col.field === "amount";
-                      const colorText = getColorTextByType(row.typeCode);
-                      const sign = getSignByType(row.typeCode);
+                      const colorText = getColorTextByType(
+                        row.typeCode as string
+                      );
+                      const sign = getSignByType(row.typeCode as string);
                       return (
                         <td
                           key={colIndex}
@@ -69,7 +78,7 @@ export default function Table({ columns, data, children }: TableProps) {
                           } `}
                         >
                           {isAmount && sign}
-                          {row[col.field]}
+                          {formatDate(row[col.field as keyof typeof row])}{" "}
                         </td>
                       );
                     })}

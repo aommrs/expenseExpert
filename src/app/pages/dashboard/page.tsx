@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/app/components/navbar/page";
+import { Navbar } from "@/app/components/navbar/Navbar";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -9,7 +9,7 @@ import {
   getMostExpenseType,
   getMostIncomeCategory,
 } from "./service";
-import Logo from "@/app/components/logo/page";
+import { Logo } from "@/app/components/logo/Logo";
 import DatePicker from "rsuite/esm/DatePicker";
 import "rsuite/dist/rsuite.min.css";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -138,7 +138,7 @@ export default function Dashboard() {
       <div>
         <div className="flex flex-col lg:flex-row justify-center items-center mt-[2rem] lg:mt-0 lg:gap-[5rem]">
           <div className="flex flex-col justify-center rounded-[20px] w-auto max-w-[20rem] h-[6rem] shadow-lg px-[2rem] cursor-pointer hover:bg-slate-100">
-            <p className="text-base font-medium">balance</p>
+            <p className="text-base font-medium">เงินคงเหลือ</p>
             <p className="text-xl font-bold">{balance}</p>
           </div>
 

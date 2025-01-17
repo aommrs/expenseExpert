@@ -4,7 +4,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { MdOutlineCategory } from "react-icons/md";
 import { useRouter } from "next/navigation";
-export default function Navbar() {
+export function Navbar() {
   const router = useRouter();
 
   return (

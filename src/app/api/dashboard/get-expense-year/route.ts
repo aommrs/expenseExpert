@@ -4,6 +4,15 @@ import { getExpenseInYear } from '@prisma/client/sql';
 
 const prisma = new PrismaClient();
 
+interface ExpenseData {
+    month: number | null;
+    income: number | null;
+    expense: number | null;
+    invest: number | null;
+    tax: number | null;
+    saving: number | null;
+}
+
 export async function GET(req: Request) {
     try {
         const url = new URL(req.url);
@@ -14,7 +23,7 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Year parameter is required' }, { status: 400 });
         }
 
-        const expenseYear = await prisma.$queryRawTyped(getExpenseInYear(year));
+        const expenseYear: ExpenseData[] = await prisma.$queryRawTyped(getExpenseInYear(year));
 
         const month = expenseYear.map((data: any) => `Month ${data.month}`);
         const income = expenseYear.map((data: any) => data.income || 0);

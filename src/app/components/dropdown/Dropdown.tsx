@@ -1,4 +1,5 @@
-import { DropDown } from "@/app/interfaces/page";
+"use client";
+import { DropDown } from "@/app/interfaces/interface";
 import React, { useState, useRef, useEffect } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
@@ -8,11 +9,7 @@ interface DropdownProps {
   onSelect: (item: DropDown) => void;
 }
 
-export default function Dropdown({
-  data,
-  dataSelected,
-  onSelect,
-}: DropdownProps) {
+export function Dropdown({ data, dataSelected, onSelect }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
