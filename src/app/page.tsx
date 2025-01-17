@@ -22,18 +22,18 @@ export default function Home() {
       <div className="mt-[4rem]">
         <Logo />
       </div>
-      <div className="relative h-[26rem] flex flex-col justify-center items-center mt-[3rem]">
-        <h1 className="text-center font-medium text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
+      <div className="relative flex flex-col justify-center items-center mt-0 sm:mt-[5rem] md:mt-[14rem]">
+        <h1 className="text-center font-medium text-[2rem] lg:text-[3rem] z-10 px-[3rem]">
           Simplify <span className="text-red-600">spending</span>, amplify
           <span className="text-amber-400"> savings</span>
         </h1>
-        <p className="text-center text-[1rem] lg:text-[2rem] md:text-[1.5rem] sm:text-[1rem] z-10 px-[3rem]">
+        <p className="text-center lg:text-[2.5rem] text-[1.3rem] z-10 px-[3rem]">
           this is smart{" "}
           <span className="text-[#9D9D9D]">financial record book</span> for you
         </p>
         <button
           onClick={handleNavigate}
-          className="hover:bg-[#2d4dcd] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[1rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
+          className="hover:bg-[#2d4dcd] md:rounded-[30px] md:px-[15px] md:py-[10px] md:text-lg lg:text-lg mt-[3rem] bg-[#335CFF] text-white rounded-[20px] px-[10px] py-[5px] text-sm z-10"
         >
           Get Started
         </button>
@@ -42,7 +42,7 @@ export default function Home() {
         <div className="fixed bottom-[2rem] left-[50%] transform -translate-x-1/2 z-50">
           <Navbar />
         </div>
-        <div className="absolute left-[1rem] bottom-[1rem] z-0">
+        <div className="absolute left-[1rem] bottom-[5rem] md:bottom-[3rem] z-0">
           <Image
             src="/images/expense-note.svg"
             alt="Note Image"
