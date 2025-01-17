@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 interface ExpenseCategory {
     categoryName: string;
-    totalAmount: number | null; // ปรับให้รองรับค่า null
+    totalAmount: number | null;
 }
 
 export async function GET(req: Request) {
