@@ -22,7 +22,7 @@ export default function Home() {
       <div className="mt-[4rem]">
         <Logo />
       </div>
-      <div className="relative h-screen flex flex-col justify-center items-center mt-[-6.6rem]">
+      <div className="relative h-[26rem] flex flex-col justify-center items-center mt-[3rem]">
         <h1 className="text-center font-medium text-[2rem] lg:text-[3rem] md:text-[2.5rem] sm:text-[1.5rem] z-10 px-[3rem]">
           Simplify <span className="text-red-600">spending</span>, amplify
           <span className="text-amber-400"> savings</span>
@@ -37,7 +37,9 @@ export default function Home() {
         >
           Get Started
         </button>
-        <div className="absolute bottom-[2rem] z-20">
+      </div>
+      <div>
+        <div className="fixed bottom-[2rem] left-[50%] transform -translate-x-1/2 z-50">
           <Navbar />
         </div>
         <div className="absolute left-[1rem] bottom-[1rem] z-0">
