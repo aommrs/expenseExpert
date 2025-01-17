@@ -1,4 +1,5 @@
-import { DropDown } from "@/app/interfaces/page";
+"use client";
+import { DropDown } from "@/app/interfaces/interface";
 import React, { useState, useRef, useEffect } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
@@ -8,11 +9,7 @@ interface DropdownProps {
   onSelect: (item: DropDown) => void;
 }
 
-export default function Dropdown({
-  data,
-  dataSelected,
-  onSelect,
-}: DropdownProps) {
+export function Dropdown({ data, dataSelected, onSelect }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +44,7 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <ul className="absolute bg-white border-gray-300 rounded-lg w-full mt-1 shadow-lg z-10 overflow-hidden">
+        <ul className="absolute bg-white border-gray-300 rounded-lg w-full mt-1 shadow-lg z-50 overflow-hidden">
           {data.map((item, index) => (
             <li
               key={index}

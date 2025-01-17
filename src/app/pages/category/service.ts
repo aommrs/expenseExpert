@@ -27,7 +27,7 @@ export const addCategory = async (categoryData: any): Promise<any> => {
         return response;
     } catch (error) {
         console.error('Error adding category:', error);
-        throw error;
+        return error;
     }
 };
 

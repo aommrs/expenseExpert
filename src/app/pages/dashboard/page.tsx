@@ -1,7 +1,7 @@
 "use client";
-import Navbar from "@/app/components/navbar/page";
+import { Navbar } from "@/app/components/navbar/Navbar";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   getBalance,
   getExpenseInYear,
@@ -9,7 +9,7 @@ import {
   getMostExpenseType,
   getMostIncomeCategory,
 } from "./service";
-import Logo from "@/app/components/logo/page";
+import { Logo } from "@/app/components/logo/Logo";
 import DatePicker from "rsuite/esm/DatePicker";
 import "rsuite/dist/rsuite.min.css";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -19,36 +19,6 @@ import {
   lineElementClasses,
   markElementClasses,
 } from "@mui/x-charts/LineChart";
-
-const income = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const expense = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-const invest = [1200, 140, 5000, 2552, 7686, 202, 4856];
-const tax = [120, 140, 752, 245, 864, 535, 674];
-const saving = [5000, 3800, 1890, 2552, 3490, 9800, 3000];
-const xLabels = [
-  "Page A",
-  "Page B",
-  "Page C",
-  "Page D",
-  "Page E",
-  "Page F",
-  "Page G",
-];
-
-const chartSetting = {
-  yAxis: [
-    {
-      label: "amount",
-    },
-  ],
-  width: 500,
-  height: 300,
-  sx: {
-    [`.${axisClasses.left} .${axisClasses.label}`]: {
-      transform: "translate(-20px, 0)",
-    },
-  },
-};
 
 export default function Dashboard() {
   const [pieData, setPieData] = useState<any[]>([]);
@@ -66,8 +36,25 @@ export default function Dashboard() {
   const [taxLine, setTaxLine] = useState<any[]>([]);
   const [savingLine, setSavingLine] = useState<any[]>([]);
   const [monthLine, setMonthLine] = useState<any[]>([]);
-
   const [balance, setBalance] = useState<any>();
+
+  const [chartWidth, setChartWidth] = useState<number>(300);
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const updateChartWidth = () => {
+    if (chartContainerRef.current) {
+      const containerWidth = chartContainerRef.current.offsetWidth;
+      setChartWidth(containerWidth - 2);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateChartWidth);
+    updateChartWidth();
+    return () => {
+      window.removeEventListener("resize", updateChartWidth);
+    };
+  }, []);
 
   const handleSelectDate = (date?: Date | null) => {
     let selectedDate: string;
@@ -151,7 +138,7 @@ export default function Dashboard() {
       <div>
         <div className="flex flex-col lg:flex-row justify-center items-center mt-[2rem] lg:mt-0 lg:gap-[5rem]">
           <div className="flex flex-col justify-center rounded-[20px] w-auto max-w-[20rem] h-[6rem] shadow-lg px-[2rem] cursor-pointer hover:bg-slate-100">
-            <p className="text-base font-medium">balance</p>
+            <p className="text-base font-medium">เงินคงเหลือ</p>
             <p className="text-xl font-bold">{balance}</p>
           </div>
 
@@ -170,21 +157,37 @@ export default function Dashboard() {
                   cy: 150,
                 },
               ]}
-              width={360}
-              height={170}
+              width={400}
+              height={300}
             />
           </div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row lg:justify-center items-center mt-[2rem] md:gap-[4rem]">
+      <div
+        ref={chartContainerRef}
+        className="flex flex-col lg:flex-row lg:justify-center items-center mt-[2rem] gap-[3rem] md:gap-[2rem]"
+      >
         <div>
           <BarChart
             dataset={expenseBarInMonth}
-            xAxis={[{ scaleType: "band", dataKey: "month" }]}
+            xAxis={[
+              {
+                scaleType: "band",
+                dataKey: "month",
+              },
+            ]}
             series={expenseBarSeries}
-            {...chartSetting}
-            width={260}
+            width={chartWidth / 2.5}
             height={200}
+            borderRadius={20}
+            margin={{ top: 100, bottom: 0, left: 0, right: 0 }}
+            slotProps={{
+              legend: {
+                direction: "row",
+                position: { vertical: "top", horizontal: "middle" },
+                padding: 0,
+              },
+            }}
           />
         </div>
         <div>
@@ -192,42 +195,32 @@ export default function Dashboard() {
             dataset={incomeBarInMonth}
             xAxis={[{ scaleType: "band", dataKey: "month" }]}
             series={incomeBarSeries}
-            {...chartSetting}
-            width={260}
+            width={chartWidth / 2.5}
             height={200}
+            borderRadius={20}
+            margin={{ top: 50, bottom: 0, left: 0, right: 0 }}
+            slotProps={{
+              legend: {
+                direction: "row",
+                position: { vertical: "top", horizontal: "middle" },
+                padding: 0,
+              },
+            }}
           />
         </div>
       </div>
-      <div className="flex justify-center lg:px-0 px-[2rem] mb-[8rem]">
+      <div className="flex justify-center mt-[4rem] lg:px-0 px-[2rem] mb-[8rem]">
         <LineChart
-          width={600}
+          width={chartWidth / 2}
           height={300}
           series={[
-            { data: incomeLine, label: "income", color: "#4caf50" },
-            { data: expenseLine, label: "expense", color: "#f44336" },
-            { data: investLine, label: "investment", color: "#2196f3" },
-            { data: taxLine, label: "tax", color: "#9c27b0" },
-            { data: savingLine, label: "saving", color: "#ff9800" },
+            { data: incomeLine, label: "รายรับ", color: "#4caf50" },
+            { data: expenseLine, label: "รายจ่าย", color: "#f44336" },
+            { data: investLine, label: "ลงทุน", color: "#2196f3" },
+            { data: taxLine, label: "ภาษี", color: "#9c27b0" },
+            { data: savingLine, label: "เงินเก็บ", color: "#ff9800" },
           ]}
           xAxis={[{ scaleType: "point", data: monthLine }]}
-          sx={{
-            [`.${lineElementClasses.root}, .${markElementClasses.root}`]: {
-              strokeWidth: 1,
-            },
-            ".MuiLineElement-series-pvId": {
-              strokeDasharray: "5 5",
-            },
-            ".MuiLineElement-series-uvId": {
-              strokeDasharray: "3 4 5 2",
-            },
-            [`.${markElementClasses.root}:not(.${markElementClasses.highlighted})`]:
-              {
-                fill: "#fff",
-              },
-            [`& .${markElementClasses.highlighted}`]: {
-              stroke: "none",
-            },
-          }}
         />
       </div>
 

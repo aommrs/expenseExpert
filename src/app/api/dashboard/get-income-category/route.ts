@@ -3,6 +3,10 @@ import { PrismaClient } from '@prisma/client';
 import { getMostIncomeCategory } from '@prisma/client/sql';
 
 const prisma = new PrismaClient();
+type IncomeCategory = {
+    categoryName: string;
+    totalAmount: number | null;
+};
 
 export async function GET(req: Request) {
     try {
@@ -13,18 +17,19 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Month and Year parameter is required' }, { status: 400 });
         }
 
-        const mostIncomeCategory = await prisma.$queryRawTyped(getMostIncomeCategory(monthYear));
+        const mostIncomeCategory: IncomeCategory[] = await prisma.$queryRawTyped(getMostIncomeCategory(monthYear));
 
         const mostIncomeCategoryBar = {
             month: monthYear,
-            ...mostIncomeCategory.reduce((acc: any, item: any) => {
+            ...mostIncomeCategory.reduce((acc: Record<string, number | null>, item: IncomeCategory) => {
                 acc[item.categoryName] = item.totalAmount;
                 return acc;
             }, {}),
         };
+
         const mostIncomeCategoryBarArray = [mostIncomeCategoryBar];
 
-        const series = mostIncomeCategory.map((item: any) => ({
+        const series = mostIncomeCategory.map((item: IncomeCategory) => ({
             dataKey: item.categoryName,
             label: item.categoryName,
         }));

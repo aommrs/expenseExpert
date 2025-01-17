@@ -2,7 +2,7 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-export default function Logo() {
+export function Logo() {
   const router = useRouter();
   return (
     <>

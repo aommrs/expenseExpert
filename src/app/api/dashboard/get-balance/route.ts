@@ -4,7 +4,7 @@ import { getBalance } from '@prisma/client/sql';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request) {
+export async function GET() {
     try {
         const balance = await prisma.$queryRawTyped(getBalance());
 

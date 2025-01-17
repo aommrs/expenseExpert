@@ -1,5 +1,6 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
 interface EmojiProps {
   placeholder?: string;
@@ -7,7 +8,7 @@ interface EmojiProps {
   value?: string;
 }
 
-export default function EmojiInput({
+export function EmojiInput({
   placeholder,
   onChange,
   value: propValue,
@@ -37,7 +38,7 @@ export default function EmojiInput({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleEmojiSelect(emoji: any) {
+  function handleEmojiSelect(emoji: EmojiClickData) {
     const newValue = value + emoji.emoji;
     setValue(newValue);
     setIsEmojiPickerOpen(false);
