@@ -10,3 +10,5 @@ Expense Expert is a user-friendly web application designed for individuals to ef
   ### Backend
   - Prisma ORM
   - Supabase
+  ### DevOps
+  - Docker
